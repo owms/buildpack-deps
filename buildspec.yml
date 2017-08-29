@@ -17,10 +17,8 @@ phases:
     commands:
       - echo "Build phase"
       - docker build -t ${IMAGE_NAME} stretch/curl
-      - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/test/${IMAGE_NAME}:$CODEBUILD_SOURCE_VERSION
       - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/test/${IMAGE_NAME}:latest
   post_build:
     commands:
       - echo "Post-Build phase"
-      - docker push ${DOCKER_REGISTRY}/test/${IMAGE_NAME}:$CODEBUILD_SOURCE_VERSION
       - docker push ${DOCKER_REGISTRY}/test/${IMAGE_NAME}:latest
