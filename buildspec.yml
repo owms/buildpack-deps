@@ -16,7 +16,7 @@ phases:
   build:
     commands:
       - echo "Build phase"
-      - docker build -t ${IMAGE_NAME} .
+      - docker build -t ${IMAGE_NAME} stretch/curl
       - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/test/${IMAGE_NAME}:$(cat composite_version)
       - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/test/${IMAGE_NAME}:latest
   post_build:
