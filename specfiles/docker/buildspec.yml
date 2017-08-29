@@ -1,0 +1,26 @@
+version: 0.2
+
+env:
+  variables:
+    DOCKER_REGISTRY: "639193537090.dkr.ecr.us-east-1.amazonaws.com"
+    IMAGE_NAME: "buildpack-deps"
+
+phases:
+  install:
+    commands:
+      - echo "Install phase"
+  pre_build:
+    commands:
+      - echo "Pre-Build phase"
+      - $(aws --region us-east-1 ecr get-login --registry-ids 639193537090)
+  build:
+    commands:
+      - echo "Build phase"
+      - docker build -t ${IMAGE_NAME} .
+      - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/test/${IMAGE_NAME}:$(cat composite_version)
+      - docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY}/test/${IMAGE_NAME}:latest
+  post_build:
+    commands:
+      - echo "Post-Build phase"
+      - docker push ${DOCKER_REGISTRY}/test/${IMAGE_NAME}:$(cat composite_version)
+      - docker push ${DOCKER_REGISTRY}/test/${IMAGE_NAME}:latest
